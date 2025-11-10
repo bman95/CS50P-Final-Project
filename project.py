@@ -24,6 +24,19 @@ def main():
     Can you beat it?
     """)
 
+    while True:
+        coins = ask_starting_coins()
+        if coins is None:
+            return
+
+        coin_game(coins)
+
+        if not play_again():
+            print(f"{YELLOW}Thanks for playing Coin Grab. See you next time!{RESET}")
+            break
+
+
+def ask_starting_coins():
     # Prompt the user to enter the starting number of coins
     while True:
         try:
@@ -33,17 +46,13 @@ def main():
                 )
             )
             if 1000 > coins > 0:
-                break
-            else:
-                print(f"{RED}Please enter a positive number of coins lower than 1000.")
+                return coins
+            print(f"{RED}Please enter a positive number of coins lower than 1000.")
         except ValueError:
             print(f"{RED}Invalid input! Please enter a valid number of coins.")
         except KeyboardInterrupt:
             print(f"\n{YELLOW}Game interrupted by user. Exiting...{RESET}")
-            return
-
-    # Start the game with the given number of coins
-    coin_game(coins)
+            return None
 
 
 def player_takes_coins():
@@ -131,6 +140,24 @@ def coin_game(coins):
 
     # Print the result of the game
     print(wining_situation(current_player))
+
+
+def play_again():
+    # Ask the player if they want to play again
+    while True:
+        try:
+            answer = input(f"{MAGENTA}Do you want to play again? (y/n): {RESET}")
+        except KeyboardInterrupt:
+            print(f"\n{YELLOW}Game interrupted by user. Exiting...{RESET}")
+            return False
+
+        answer = answer.strip().lower()
+        if answer in ("y", "yes"):
+            return True
+        if answer in ("n", "no"):
+            return False
+
+        print(f"{RED}Invalid option. Please type 'y' or 'n'.{RESET}")
 
 
 if __name__ == "__main__":
